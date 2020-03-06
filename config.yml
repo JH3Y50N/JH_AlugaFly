@@ -1,0 +1,31 @@
+Permissoes:
+
+  # Jogadores com esta permissão não precisaram pagar para voar
+  # Jogadores com esta permissao também não podem alugar Fly.
+  Bypass: essentials.fly
+  
+  # Permissão para que os jogadores possam alugar o Fly.
+  PodeAlugar: jh_alugafly.alugar
+
+Opcoes:
+  
+  # Tempo de voo em minutos
+  TempoDeVoo: 1
+  
+  # Preço para para poder usar o tempo de voo
+  PrecoVoar: 5000.0
+  
+  # Não será possível voar com o Fly alugado nos mundos listados aqui"
+  MundosProibidos:
+  - the_end
+
+Mensagens:
+  SemMoneyRenovar: "&cSeu modo Fly foi desativado pois você não tem coins para renovar"
+  FlyRenovado: "&aVocê pagou &f${money}&a para continuar com o modo Fly ativo"
+  NaoPodeAlugar: "&cVocê não pode alugar Fly porque você já tem permissão para voar sem alugar."
+  SemPermissaoAlugar: "&cVocê não tem permissão para alugar Fly."
+  FlyDesativado: "&aSeu modo Fly foi desativado, Tempo restante: &f{tempo}s"
+  FlyReativado: "&aVocê tinha &f{tempo}s&a da última compra eles foram recuperados."
+  SemMoney: "&cVocê precisa de &f{money}&c para poder alugar o modo Fly."
+  ModoFlyAlugado: "&aVocê alugou o Fly, pagará &f{money}&a por cada minuto de uso!"
+  FlyDesativadoMundo: "&cO modo Fly foi desativado pois não é permitido voar neste mundo."

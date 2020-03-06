@@ -1,0 +1,8 @@
+name: JH_AlugaFly
+main: JH_AlugaFly.Main
+author: Jheyson
+version: 1.0.0
+depend: [Vault]
+commands:
+  alugafly:
+    aliases: [af, alugarfly]
