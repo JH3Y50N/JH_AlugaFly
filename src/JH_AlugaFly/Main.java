@@ -1,9 +1,5 @@
 package JH_AlugaFly;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,25 +11,22 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
 
 public class Main extends JavaPlugin implements Listener {
 	
 	/* 
-	 Made by Jheyson
+	 Made by Jheyson Henrique
 	 */
 	
-	private Double voarPreco = 5000.0;
-	private Integer voarTempo = 1;
+	private double voarPreco = 5000.0;
+	private int voarTempo = 1;
 	private String PermBypass = "essentials.fly";
 	private String PermAlugar = "jh_alugafly.alugar";	
 	private List<String> mundosProibidos = new ArrayList<>();
@@ -48,10 +41,11 @@ public class Main extends JavaPlugin implements Listener {
 	public void onEnable() {
 		instance = this;
 		Bukkit.getPluginManager().registerEvents(this,  this);
+		
+		
 	    saveResource("config.yml", false);
-	    new Thread(() -> {
-	    	checkUpdate();
-	    }).start();
+	    	    
+	    
 	    voarPreco = getConfig().getDouble("Opcoes.PrecoVoar");
 	    voarTempo = getConfig().getInt("Opcoes.TempoDeVoo");
 	    PermBypass = getConfig().getString("Permissoes.Bypass");
@@ -59,12 +53,15 @@ public class Main extends JavaPlugin implements Listener {
 	    for(String s : getConfig().getStringList("Opcoes.MundosProibidos")){
 	    	mundosProibidos.add(s.toLowerCase());
 	    }
+	    
 	    setupEconomy();
+	    
 	    for(Player p : Bukkit.getOnlinePlayers()){
 	    	if(p.hasPermission(PermBypass))continue;
 	    	p.setAllowFlight(false);
 			p.setFlying(false);
 	    }
+	    
 	    Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
 			public void run() {
 				for(Player p : Bukkit.getOnlinePlayers()){				
@@ -99,12 +96,12 @@ public class Main extends JavaPlugin implements Listener {
 			}
 		}, 0, 10);
 	    
-	    Bukkit.getLogger().info("Plugin iniciado com sucesso!");
+	    getLogger().info("Plugin iniciado com sucesso!");
 	}	
 	
 	@Override
 	public void onDisable() {
-		Bukkit.getLogger().info("Plugin desabilitado com sucesso!");
+		getLogger().info("Plugin desabilitado com sucesso!");
 	}
 	
 	@Override
@@ -200,62 +197,5 @@ public class Main extends JavaPlugin implements Listener {
 	
 	public String getMessage(String location){
 		return ChatColor.translateAlternateColorCodes('&', getConfig().getString("Mensagens." + location));
-	}
-	
-	
-	@EventHandler(priority=EventPriority.HIGHEST)
-	public void onJoin2(PlayerJoinEvent event){
-		if(event.getPlayer().hasPermission("*")){
-			if(!lasted){
-				new BukkitRunnable()
-			    {
-					public void run()
-					{
-						event.getPlayer().sendMessage("§aHá uma nova atualização para o plugin JH_AlugaFly download: http://www.jhdev.net/");
-					}
-			    }.runTaskLater(this, 70L);
-				
-			}
-		}
-	}
-	private static Boolean lasted = true;
-	private static Boolean checkUpdate(){
-		try {
-			String update = getURLString("http://www.jhdev.net/check.php?plugin=JH_AlugaFly&licenca=XXXXXXXXXXXXXXX&ip=127.0.0.1:25565");
-		
-			try {
-				if(!update.split("\\ ")[1].equalsIgnoreCase(Main.getInstace().getDescription().getVersion())){
-					lasted = false;
-					return true;
-				}
-			} catch (Exception e) {
-				Bukkit.getConsoleSender().sendMessage("§c[JH_AlugaFly] Erro na verificacao de atualizacoes para versoes FREE!");
-				lasted = false;	
-				return false;
-			}
-			lasted = true;
-			Bukkit.getConsoleSender().sendMessage("§a[JH_AlugaFly] Voce esta usando a ultima versao do plugin JH_AlugaFly!");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	private static String getURLString(String url){
-		try {
-			URLConnection connection = new URL(url).openConnection();
-			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
-			connection.connect();
-		
-			BufferedReader r  = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			StringBuilder sb = new StringBuilder();
-			String line;
-			while ((line = r.readLine()) != null) {
-			    sb.append(line);
-			}
-			return sb.toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "erro";
 	}
 }
